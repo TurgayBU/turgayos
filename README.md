@@ -57,6 +57,20 @@ turgayos/
 └── run-qemu.sh
 text
 
+## 📦 Prebuilt Disk Image
+
+Don't want to build from source? Download the prebuilt `disk.img` (~80 MB)
+from [Releases](https://github.com/TurgayBU/turgayos/releases).
+
+**Boot it in QEMU:**
+```bash
+qemu-system-x86_64 \
+    -drive file=disk.img,format=raw \
+    -netdev user,id=net0 \
+    -device e1000,netdev=net0 \
+    -nographic
+
+Login: root / turgay
 
 ## Quick Start
 
@@ -179,6 +193,20 @@ MIT License — see LICENSE for details.
 
 Exception: The kernel module turgay_module.c and kernel patches are
 licensed under GPL-2.0 to comply with Linux kernel licensing requirements.
+
+## 📄 Full Report
+
+A complete 242-page engineering report documenting the entire project:
+
+- Project methodology and development environment
+- Step-by-step Buildroot configuration
+- Kernel customizations with screenshots
+- Custom syscall and kernel module implementation
+- Troubleshooting notes and lessons learned
+
+**Download:** [Turgay_Bozoglu_Report.pdf](https://github.com/TurgayBU/turgayos/releases/download/v1.0/Turgay_Bozoglu_Report.pdf) (~50 MB)
+
+---
 Acknowledgments
 
     Oruç Raif Önvural — Operating Systems course instructor, Beykoz University

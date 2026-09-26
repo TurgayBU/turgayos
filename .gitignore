@@ -43,3 +43,5 @@ Thumbs.db
 # Temporary
 *.tmp
 *.bak
+# Exception: allow custom Buildroot package tarballs
+!package/turgay_module/src/*.tar.gz

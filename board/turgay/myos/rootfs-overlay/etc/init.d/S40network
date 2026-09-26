@@ -1,0 +1,21 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+        echo "Starting network..."
+        # eth0 başlat ve DHCP ile IP al
+        if ip link set eth0 up 2>/dev/null; then
+            udhcpc -i eth0 -b -q
+        fi
+        ;;
+    stop)
+        echo "Stopping network..."
+        killall udhcpc 2>/dev/null
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+
+exit 0

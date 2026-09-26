@@ -1,0 +1,60 @@
+#!/bin/sh
+# sysinfo - Minimal version
+
+echo "========================================"
+echo "       TurgayOS System Information"
+echo "========================================"
+
+# OS
+if [ -f /etc/os-release ]; then
+    OS_NAME=$(grep "PRETTY_NAME" /etc/os-release | cut -d'"' -f2)
+    echo "OS:        ${OS_NAME}"
+else
+    echo "OS:        TurgayOS/Buildroot"
+fi
+
+# Kernel
+echo "Kernel:    $(uname -r)"
+
+# Architecture
+echo "Arch:      $(uname -m)"
+
+# Hostname
+echo "Hostname:  $(uname -n)"
+
+# CPU
+if [ -f /proc/cpuinfo ]; then
+    CPU_MODEL=$(grep "model name" /proc/cpuinfo | head -1 | cut -d':' -f2 | sed 's/^ //')
+    [ -z "$CPU_MODEL" ] && CPU_MODEL=$(grep "Processor" /proc/cpuinfo | head -1 | cut -d':' -f2 | sed 's/^ //')
+    [ -n "$CPU_MODEL" ] && echo "CPU:       ${CPU_MODEL}"
+fi
+
+# RAM
+TOTAL_RAM=$(free | awk 'NR==2{print $2}')
+FREE_RAM=$(free | awk 'NR==2{print $4}')
+if [ -n "$TOTAL_RAM" ]; then
+    TOTAL_MB=$((TOTAL_RAM / 1024))
+    FREE_MB=$((FREE_RAM / 1024))
+    echo "RAM:       ${TOTAL_MB} MB total, ${FREE_MB} MB free"
+fi
+
+# Disk
+if command -v df > /dev/null 2>&1; then
+    DISK_INFO=$(df -h / 2>/dev/null | awk 'NR==2{print $2" total, "$3" used, "$4" free"}')
+    [ -n "$DISK_INFO" ] && echo "Disk (/):  ${DISK_INFO}"
+fi
+
+# Uptime
+if [ -f /proc/uptime ]; then
+    UPTIME_SEC=$(cat /proc/uptime | cut -d' ' -f1 | cut -d'.' -f1)
+    UPTIME_HOURS=$((UPTIME_SEC / 3600))
+    UPTIME_MINS=$(((UPTIME_SEC % 3600) / 60))
+    
+    if [ $UPTIME_HOURS -gt 0 ]; then
+        echo "Uptime:    ${UPTIME_HOURS}h ${UPTIME_MINS}m"
+    else
+        echo "Uptime:    ${UPTIME_MINS}m"
+    fi
+fi
+
+echo "========================================"

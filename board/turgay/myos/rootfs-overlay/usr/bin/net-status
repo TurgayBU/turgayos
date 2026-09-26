@@ -1,0 +1,27 @@
+#!/bin/sh
+# Show network driver status
+
+echo "=== Network Driver Status ==="
+echo ""
+
+# e1000 kontrolü
+if lsmod | grep -q e1000; then
+    echo "🔵 e1000: LOADED"
+    echo "   - Interface: $(ip link show | grep -A1 e1000 | grep -o 'eth[0-9]' 2>/dev/null || echo 'none')"
+else
+    echo "⚪ e1000: NOT LOADED"
+fi
+
+echo ""
+
+# virtio_net kontrolü
+if lsmod | grep -q virtio_net; then
+    echo "🔵 virtio_net: LOADED"
+    echo "   - Interface: $(ip link show | grep -A1 virtio | grep -o 'eth[0-9]' 2>/dev/null || echo 'none')"
+else
+    echo "⚪ virtio_net: NOT LOADED"
+fi
+
+echo ""
+echo "📊 All loaded modules:"
+lsmod | grep -E "e1000|virtio" || echo "   (none)"

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Set hostname
+if [ -f /etc/hostname ]; then
+    hostname -F /etc/hostname
+    echo "Hostname set to: $(hostname)"
+fi

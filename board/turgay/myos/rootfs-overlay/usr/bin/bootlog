@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# bootlog - Show recent boot messages (BusyBox compatible)
+
+# Show last 20 lines of dmesg output with [OK] prefix
+dmesg | tail -20 | while read line; do
+    echo "[OK] $line"
+done

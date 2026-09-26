@@ -1,0 +1,7 @@
+config BR2_PACKAGE_TURGAY_MODULE
+    bool "turgay_module"
+    depends on BR2_LINUX_KERNEL
+    help
+      Turgay's custom kernel module
+      
+      This module prints a message when loaded/unloaded.

@@ -1,0 +1,37 @@
+#!/bin/sh
+
+echo "Interface: eth0"
+
+# BusyBox uyumlu IP alma (eth0 için)
+IP=$(ip addr show eth0 2>/dev/null | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)
+if [ -z "$IP" ]; then
+    # Alternatif: ifconfig ile dene
+    IP=$(ifconfig eth0 2>/dev/null | grep 'inet addr:' | cut -d: -f2 | awk '{print $1}')
+fi
+if [ -z "$IP" ]; then
+    IP="N/A"
+fi
+echo "IP: $IP"
+
+# BusyBox uyumlu Gateway bulma
+GATEWAY=$(route -n 2>/dev/null | grep '^0.0.0.0' | awk '{print $2}')
+if [ -z "$GATEWAY" ]; then
+    # Alternatif: ip route ile dene (BusyBox'ta da var)
+    GATEWAY=$(ip route 2>/dev/null | grep 'default' | awk '{print $3}')
+fi
+if [ -z "$GATEWAY" ]; then
+    GATEWAY="N/A"
+fi
+echo "Gateway: $GATEWAY"
+
+# Ping testi (BusyBox ping uyumlu)
+if [ "$GATEWAY" != "N/A" ]; then
+    # BusyBox ping: -c count, -w deadline (saniye), -q quiet
+    if ping -c 1 -w 2 $GATEWAY > /dev/null 2>&1; then
+        echo "Ping: OK"
+    else
+        echo "Ping: FAILED"
+    fi
+else
+    echo "Ping: No gateway"
+fi

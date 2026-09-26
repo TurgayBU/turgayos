@@ -1,0 +1,25 @@
+#!/bin/sh
+
+echo "User: $(whoami)"
+echo "Hostname: $(hostname)"
+
+# BusyBox uyumlu uptime
+UPTIME=$(uptime | awk -F 'up ' '{print $2}' | awk -F ',' '{print $1}')
+if [ -z "$UPTIME" ]; then
+    UPTIME=$(uptime | sed 's/.*up //' | sed 's/,.*//')
+fi
+echo "Uptime: $UPTIME"
+
+# BusyBox uyumlu IP alma
+IP=$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | head -1 | awk '{print $2}' | cut -d/ -f1)
+if [ -z "$IP" ]; then
+    IP=$(ifconfig 2>/dev/null | grep 'inet addr:' | grep -v '127.0.0.1' | head -1 | cut -d: -f2 | awk '{print $1}')
+fi
+if [ -z "$IP" ]; then
+    # eth0 özel kontrol
+    IP=$(ip addr show eth0 2>/dev/null | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)
+fi
+if [ -z "$IP" ]; then
+    IP="No IP assigned"
+fi
+echo "IP: $IP"

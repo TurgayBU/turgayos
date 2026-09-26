@@ -1,0 +1,3 @@
+#!/bin/sh
+# Mount /proc filesystem
+mount -t proc none /proc

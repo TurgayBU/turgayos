@@ -1,0 +1,8 @@
+# Custom prompt
+export PS1='\u@\h:\w\$ '
+
+# Default PATH
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+# Umask
+umask 022

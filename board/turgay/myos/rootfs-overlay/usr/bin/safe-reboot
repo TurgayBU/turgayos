@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "System will reboot in 5 seconds..."
+echo "Press Ctrl+C to cancel"
+
+count=5
+while [ $count -gt 0 ]; do
+    echo -n "$count... "
+    sleep 1
+    count=$((count - 1))
+done
+echo "Rebooting now!"
+/sbin/reboot

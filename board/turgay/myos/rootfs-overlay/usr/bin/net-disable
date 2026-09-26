@@ -1,0 +1,30 @@
+#!/bin/sh
+# Network driver deactivater
+
+echo "=== Network Driver Deactivator ==="
+echo "1) e1000"
+echo "2) virtio_net"
+echo "3) Both"
+echo -n "Seçiminiz (1-3): "
+read choice
+
+case $choice in
+    1)
+        rmmod e1000 2>/dev/null && echo "✅ e1000 removed" || echo "❌ e1000 not loaded"
+        ;;
+    2)
+        rmmod virtio_net 2>/dev/null && echo "✅ virtio_net removed" || echo "❌ virtio_net not loaded"
+        ;;
+    3)
+        rmmod e1000 virtio_net 2>/dev/null
+        echo "✅ Drivers removed (if they were loaded)"
+        ;;
+    *)
+        echo "❌ Invalid choice"
+        exit 1
+        ;;
+esac
+
+# Kalan ağ arayüzlerini göster
+echo -e "\n📡 Remaining network interfaces:"
+ip link show | grep -E "^[0-9]+:"

@@ -1,0 +1,45 @@
+# Buildroot (upstream — user clones their own)
+buildroot/
+
+# Build output
+output/
+dl/
+build/
+
+# Kernel source (upstream)
+linux-*/
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+
+# Build artifacts
+*.o
+*.ko
+*.mod
+*.mod.c
+*.symvers
+*.order
+*.cmd
+
+# Disk images (use GitHub Releases instead)
+*.img
+*.vdi
+*.vmdk
+*.qcow2
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary
+*.tmp
+*.bak
